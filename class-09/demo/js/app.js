@@ -120,3 +120,25 @@ for (let i = 0; i < cats.length; i++) {
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+const form = document.getElementById("cats-form");
+form.addEventListener("submit", function(event){
+  event.preventDefault();
+  console.log(event.target);
+
+  const name = event.target.name.value; 
+  const breed = event.target.breed.value;
+  const likes = event.target.likes.value.split(",");
+  const goodWithCats = event.target.cats.checked;
+  const goodWithDogs = event.target.dogs.checked;
+  const goodWithKids = event.target.kids.checked;
+
+  const cat = new Cat(name,likes,'images/jumper.jpeg',goodWithKids,goodWithDogs,goodWithCats,breed);
+
+  cat.getAge(3,7);
+  cat.render();
+
+  form.reset();
+
+})
+
