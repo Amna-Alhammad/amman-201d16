@@ -1,7 +1,7 @@
 'use strict';
 
 // target our order form from the html
-const orderForm = document.getElementById('orderForm');
+const orderForm = document.getElementById('order-form');
 const orders = document.getElementById('orders');
 
 // constructor function to create a basic drink
@@ -14,10 +14,23 @@ function Coffee(name, size, milk, isHot, drinkType) {
 
   // add every drink that gets created into an array
   Coffee.drinks.push(this);
+  localStorage.setItem("orders",JSON.stringify(Coffee.drinks));
 }
 
 // set the global array to empty
 Coffee.drinks = [];
+
+function retrieve()
+{
+  console.log(Coffee.drinks);
+  if(localStorage.length >0)
+  {
+    Coffee.drinks = JSON.parse(localStorage.getItem("orders"));
+    
+    renderOrders();
+  }
+  
+}
 
 // event handler function to run everytime the form is submitted
 function handleSubmit(event) {
@@ -28,9 +41,10 @@ function handleSubmit(event) {
   const drink = event.target;
   const name = drink.name.value;
   const size = drink.size.value;
-  const isHot = drink.isHot.value;
+  const isHot = drink.isHot.checked;
   const dType = drink.drinkType.value;
   const milk = drink.milk.value;
+
 
   new Coffee(name, size, milk, isHot, dType);
 
@@ -47,7 +61,7 @@ function renderOrders() {
     const drinkLI = document.createElement('li');
     const infoP = document.createElement('p');
     let temp;
-    if (Coffee.drinks[i].isHot === 'on') {
+    if (Coffee.drinks[i].isHot === false) {
       temp = 'cold';
     } else {
       temp = 'hot';
@@ -60,3 +74,4 @@ function renderOrders() {
 
 // Add an event listener to the submit button
 orderForm.addEventListener('submit', handleSubmit);
+retrieve();
